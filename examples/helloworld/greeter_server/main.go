@@ -3,6 +3,7 @@ package main
 
 import (
 	"context"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 
@@ -32,6 +33,10 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterGreeterServer(s, &server{})
+
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
